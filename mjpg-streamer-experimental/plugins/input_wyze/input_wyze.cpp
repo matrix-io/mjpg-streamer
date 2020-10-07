@@ -213,8 +213,7 @@ Input Value.: arg is not used
 Return Value: NULL
 ******************************************************************************/
 void *worker_thread(void *arg) {
-  int i = 0;
-
+  struct timeval timestamp;
   /* set cleanup handler to cleanup allocated resources */
   pthread_cleanup_push(worker_cleanup, NULL);
 
@@ -233,10 +232,16 @@ void *worker_thread(void *arg) {
       {
         pglobal->in[plugin_number].size = memlen;
         memcpy(pglobal->in[plugin_number].buf, buffer_, memlen);
+        
+        gettimeofday(&timestamp, NULL);
+        
+        pglobal->in[plugin_number].timestamp = timestamp;
+        
+        printf("frame (size: %d)\n", pglobal->in[plugin_number].size);
+        /* signal fresh_frame */
+        pthread_cond_broadcast(&pglobal->in[plugin_number].db_update);        
       }
 
-      /* signal fresh_frame */
-      pthread_cond_broadcast(&pglobal->in[plugin_number].db_update);
       pthread_mutex_unlock(&pglobal->in[plugin_number].db);
     }
   }
