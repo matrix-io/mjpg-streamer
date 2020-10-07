@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8.3)
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
 
-project("mjpg-streamer" C)
+project("mjpg-streamer" C CXX)
 
 # If the user doesn't manually specify a build type, use 'Release'
 message("CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}")
@@ -62,6 +62,9 @@ add_subdirectory(plugins/input_opencv)
 add_subdirectory(plugins/input_raspicam)
 add_subdirectory(plugins/input_ptp2)
 add_subdirectory(plugins/input_uvc)
+add_subdirectory(plugins/input_wyze)
+add_subdirectory(plugins/input_testpicture)
+
 
 #
 # Output plugins
